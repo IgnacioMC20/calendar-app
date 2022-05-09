@@ -3,5 +3,5 @@
 This project was created with React.
 
 
-### `currently developing`
+### `currently in development`
 
