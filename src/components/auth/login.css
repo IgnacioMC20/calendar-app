@@ -15,6 +15,7 @@
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
     padding: 5%;
     background: #0062cc;
+    /* background: #151c24; */
 }
 .login-form-2 h3{
     text-align: center;
@@ -48,4 +49,13 @@
     color: #0062cc;
     font-weight: 600;
     text-decoration: none;
+}
+
+.change-form{
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.change-form:hover{
+    color: #141414;
 }

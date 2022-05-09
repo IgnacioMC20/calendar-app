@@ -8,6 +8,7 @@ import { CalendarEvent } from './CalendarEvent'
 
 import 'moment/locale/es'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { CalendarModal } from './CalendarModal'
 
 const localizer = momentLocalizer(moment);
 moment.locale('es');
@@ -37,7 +38,7 @@ export const CalendarScreen = () => {
   }
 
   const onViewChange = (event) => {
-    console.log(event);
+    setLastView(event);
     localStorage.setItem('lastView', event);
   }
 
@@ -70,10 +71,13 @@ export const CalendarScreen = () => {
         onDoubleClickEvent={onDoubleClick}
         onSelectEvent={onSelecetEvent}
         onView={onViewChange}
+        view={lastView}
         components={{
             event: CalendarEvent
           }}
       />
+
+      <CalendarModal />
     </div>
   )
 }
