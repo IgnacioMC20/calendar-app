@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, /* useState */ } from 'react';
 import './login.css';
 
 export const LoginScreen = () => {
@@ -44,7 +44,7 @@ export const LoginScreen = () => {
                             />
                         </div>
                         <div className="form-group my-4 d-flex justify-content-center">
-                            <a className='change-form' onClick={registrarForm}>Eres nuevo aquí?</a>
+                            <button className='change-form' onClick={registrarForm} > Eres nuevo aquí?</button>
                         </div>
                     </form>
                 </div>
@@ -89,7 +89,7 @@ export const LoginScreen = () => {
                                 value="Crear cuenta" />
                         </div>
                         <div className="form-group my-4 d-flex justify-content-center">
-                            <a className='change-form' style={{ color:'white' }} onClick={ingresarForm}>Ya tienes una cuenta?</a>
+                            <button className='change-form' style={{ color:'white' }} onClick={ingresarForm}>Ya tienes una cuenta?</button>
                         </div>
                     </form>
                 </div>
