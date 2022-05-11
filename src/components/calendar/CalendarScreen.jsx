@@ -9,7 +9,7 @@ import { CalendarEvent } from './CalendarEvent'
 import 'moment/locale/es'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { CalendarModal } from './CalendarModal'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { iuOpenModal } from '../../actions/ui'
 
 const localizer = momentLocalizer(moment);
