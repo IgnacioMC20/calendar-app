@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal';
 import moment from 'moment';
 
@@ -6,6 +6,7 @@ import DateTimePicker from 'react-datetime-picker';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { iuCloseModal } from '../../actions/ui';
+import { eventAddNew, eventUnsetActive, eventUpdate } from '../../actions/events';
 
 const customStyles = {
     content: {
@@ -23,23 +24,30 @@ Modal.setAppElement('#root');
 const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const nowPlus1 = moment().minutes(0).seconds(0).add(2, 'hours');
 
-export const CalendarModal = () => {
+const initEvent = {
+    title: '',
+    notes: '',
+    start: now.toDate(),
+    end: nowPlus1.toDate(),
+}
 
-    const [dateStart, setDateStart] = useState(now.toDate());
-    const [dateEnd, setDateEnd] = useState(nowPlus1.toDate());
+export const CalendarModal = ({date}) => {
+    
     const [titleValid, setTitleValid] = useState(true)
 
     const { isModalOpen } = useSelector( state => state.ui );
     const dispatch = useDispatch();
+    const { activeEvent } = useSelector( state => state.calendar);
 
-    const [formValues, setFormValues] = useState({
-        title: 'Evento',
-        notes: '123',
-        start: now.toDate(),
-        end: nowPlus1.toDate(),
-    })
+    const [formValues, setFormValues] = useState(initEvent)
 
     const { title, notes, start, end } = formValues;
+
+    useEffect(() => {
+      if(activeEvent) setFormValues(activeEvent);
+      else setFormValues(initEvent);
+    }, [activeEvent, setFormValues])
+    
 
     const handleInputChange = ({ target }) => {
         setFormValues({
@@ -49,13 +57,15 @@ export const CalendarModal = () => {
     }
 
     const closeModal = () => {
-        console.log('closing modal');
         dispatch(iuCloseModal());
+        if(activeEvent) dispatch(eventUnsetActive()); // unset active event
+        setTimeout(() => {
+            setFormValues(initEvent);
+        }, 300);
         
     }
 
     const handleStartDateChange = (e) => {
-        setDateStart(e);
         setFormValues({
             ...formValues,
             start: e
@@ -63,7 +73,6 @@ export const CalendarModal = () => {
     }
 
     const handleEndDateChange = (e) => {
-        setDateEnd(e);
         setFormValues({
             ...formValues,
             end: e
@@ -84,7 +93,19 @@ export const CalendarModal = () => {
             return setTitleValid(false);
         }
 
-        // realizar la petición
+        if(activeEvent){
+            dispatch(eventUpdate(formValues));
+        }else{
+            dispatch(eventAddNew({
+                ...formValues,
+                id: new Date().getTime(),
+                user: {
+                    _id: '123',
+                    name: 'Ignacio',
+                }
+            }))
+        }
+
         setTitleValid(true);
         closeModal();
 
@@ -96,17 +117,17 @@ export const CalendarModal = () => {
 
 
         <Modal isOpen={isModalOpen} closeTimeoutMS={300} onRequestClose={closeModal} style={customStyles} className='modal' overlayClassName='modal-fondo'>
-            <h1> Nuevo evento </h1>
+            <h1> {activeEvent ? 'Editar Evento' : 'Nuevo evento'} </h1>
             <form className="container" onSubmit={handleSubmitForm}>
 
                 <div className="form-group my-3">
                     <label>Fecha y hora inicio</label>
-                    <DateTimePicker className="form-control" onChange={handleStartDateChange} value={dateStart} />
+                    <DateTimePicker className="form-control" onChange={handleStartDateChange} value={start} />
                 </div>
 
                 <div className="form-group my-3">
                     <label>Fecha y hora fin</label>
-                    <DateTimePicker className="form-control" onChange={handleEndDateChange} minDate={dateStart} value={dateEnd} />
+                    <DateTimePicker className="form-control" onChange={handleEndDateChange} minDate={start} value={end} />
                 </div>
 
                 <div className="form-group">
