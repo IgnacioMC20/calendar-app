@@ -31,7 +31,6 @@ export const LoginScreen = () => {
     //Todo: validate form
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log(formLoginValues);
         dispatch(startLogin(lEmail, lPassword));
     }
 
@@ -43,7 +42,6 @@ export const LoginScreen = () => {
             Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
             return;
         }
-        console.log(formRegisterValues);
         dispatch(startRegister({name: rName, password: rPassword, email: rEmail}));
     }
 

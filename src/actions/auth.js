@@ -4,7 +4,6 @@ import { types } from "../types/types";
 
 export const startLogin = (email, password) => {
     return async (dispatch) => {
-        console.log(email, password);
         const resp = await fetchWithoutToken('auth', { email, password }, 'POST');
         const body = await resp.json();
         if (body.ok) {
@@ -23,7 +22,6 @@ export const startLogin = (email, password) => {
 
 export const startRegister = ({name, email, password}) => {
     return async (dispatch) => {
-        console.log(name, email, password);
         const resp = await fetchWithoutToken('auth/new', { name, email, password }, 'POST');
         const body = await resp.json();
         if (body.ok) {
