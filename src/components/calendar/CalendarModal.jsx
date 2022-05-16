@@ -6,7 +6,7 @@ import DateTimePicker from 'react-datetime-picker';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { iuCloseModal } from '../../actions/ui';
-import { eventAddNew, eventUnsetActive, eventUpdate } from '../../actions/events';
+import { eventStartAddNew, eventStartUpdate, eventUnsetActive } from '../../actions/events';
 
 const customStyles = {
     content: {
@@ -94,16 +94,9 @@ export const CalendarModal = ({date}) => {
         }
 
         if(activeEvent){
-            dispatch(eventUpdate(formValues));
+            dispatch(eventStartUpdate(formValues));
         }else{
-            dispatch(eventAddNew({
-                ...formValues,
-                id: new Date().getTime(),
-                user: {
-                    _id: '123',
-                    name: 'Ignacio',
-                }
-            }))
+            dispatch(eventStartAddNew( formValues ));
         }
 
         setTitleValid(true);
@@ -118,7 +111,7 @@ export const CalendarModal = ({date}) => {
 
         <Modal isOpen={isModalOpen} closeTimeoutMS={300} onRequestClose={closeModal} style={customStyles} className='modal' overlayClassName='modal-fondo'>
             <h1> {activeEvent ? 'Editar Evento' : 'Nuevo evento'} </h1>
-            <form className="container" onSubmit={handleSubmitForm}>
+            <form onSubmit={handleSubmitForm}>
 
                 <div className="form-group my-3">
                     <label>Fecha y hora inicio</label>

@@ -1,32 +1,66 @@
-import React, { useEffect, /* useState */ } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import { startLogin, startRegister } from '../../actions/auth';
+import { useForm } from '../../hooks/useForm';
 import './login.css';
 
 export const LoginScreen = () => {
-    useEffect(() => {
-        document.getElementById('register').style.display = 'none';
-    }, [])    
- 
-    const ingresarForm = () => {
-        document.getElementById('login').style.display = 'block';
-        document.getElementById('register').style.display = 'none';
+  
+    const dispatch = useDispatch();
+
+    const [ formLoginValues, handleLoginInputChange ] = useForm( {
+        lEmail: 'igna@ign.com',
+        lPassword: '123456'
+    } );
+
+    const [ formRegisterValues, handleRegisterInputChange ] = useForm( {
+        rName: 'Ignacio',
+        rEmail: 'ign@ign.com',
+        rPassword: '123456',
+        rPassword2: '123456',
+
+    } );
+
+    const { lEmail, lPassword } = formLoginValues;
+    const { rName,
+            rEmail,
+            rPassword,
+            rPassword2, } = formRegisterValues;
+
+    //Todo: validate form
+    const handleLogin = (e) => {
+        e.preventDefault();
+        console.log(formLoginValues);
+        dispatch(startLogin(lEmail, lPassword));
     }
-    
-    const registrarForm = () => {
-        document.getElementById('register').style.display = 'block';
-        document.getElementById('login').style.display = 'none';
+
+    //Todo: validate form
+    const handleRegister = (e) => {
+        e.preventDefault();
+        if(rPassword !== rPassword2){
+            console.log('Passwords do not match');
+            Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
+            return;
+        }
+        console.log(formRegisterValues);
+        dispatch(startRegister({name: rName, password: rPassword, email: rEmail}));
     }
 
     return (
-        <div className="container login-container">
+        <div className="login-container">
             <div className="row d-flex justify-content-center">
-                <div className="col-md-6 login-form-1" id='login'>
+                <div className="col-md-6 login-form-1">
                     <h3>Ingreso</h3>
-                    <form>
+                    <form onSubmit={handleLogin}>
                         <div className="form-group my-4">
                             <input 
                                 type="text"
                                 className="form-control"
                                 placeholder="Correo"
+                                name='lEmail'
+                                value={lEmail}
+                                onChange={handleLoginInputChange}
                             />
                         </div>
                         <div className="form-group my-4">
@@ -34,6 +68,9 @@ export const LoginScreen = () => {
                                 type="password"
                                 className="form-control"
                                 placeholder="Contraseña"
+                                name='lPassword'
+                                value={lPassword}
+                                onChange={handleLoginInputChange}
                             />
                         </div>
                         <div className="form-group my-4 d-flex justify-content-center">
@@ -44,19 +81,21 @@ export const LoginScreen = () => {
                             />
                         </div>
                         <div className="form-group my-4 d-flex justify-content-center">
-                            <button className='change-form' onClick={registrarForm} > Eres nuevo aquí?</button>
                         </div>
                     </form>
                 </div>
 
-                <div className="col-md-6 login-form-2" id='register'>
+                <div className="col-md-6 login-form-2">
                     <h3>Registro</h3>
-                    <form>
+                    <form onSubmit={handleRegister}>
                         <div className="form-group my-4">
                             <input
                                 type="text"
                                 className="form-control"
                                 placeholder="Nombre"
+                                name='rName'
+                                value={rName}
+                                onChange={handleRegisterInputChange}
                             />
                         </div>
                         <div className="form-group my-4">
@@ -64,13 +103,19 @@ export const LoginScreen = () => {
                                 type="email"
                                 className="form-control"
                                 placeholder="Correo"
+                                name='rEmail'
+                                value={rEmail}
+                                onChange={handleRegisterInputChange}
                             />
                         </div>
                         <div className="form-group my-4">
                             <input
                                 type="password"
                                 className="form-control"
-                                placeholder="Contraseña" 
+                                placeholder="Contraseña"
+                                name='rPassword'
+                                value={rPassword}
+                                onChange={handleRegisterInputChange}
                             />
                         </div>
 
@@ -78,7 +123,10 @@ export const LoginScreen = () => {
                             <input
                                 type="password"
                                 className="form-control"
-                                placeholder="Repita la contraseña" 
+                                placeholder="Repita la contraseña"
+                                name='rPassword2'
+                                value={rPassword2}
+                                onChange={handleRegisterInputChange}
                             />
                         </div>
 
@@ -89,7 +137,6 @@ export const LoginScreen = () => {
                                 value="Crear cuenta" />
                         </div>
                         <div className="form-group my-4 d-flex justify-content-center">
-                            <button className='change-form' style={{ color:'white' }} onClick={ingresarForm}>Ya tienes una cuenta?</button>
                         </div>
                     </form>
                 </div>

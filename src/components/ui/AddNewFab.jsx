@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { iuOpenModal } from '../../actions/ui';
+import { BsPlusLg } from "react-icons/bs";
 
 export const AddNewFab = () => {
 
@@ -12,7 +13,7 @@ export const AddNewFab = () => {
     
   return (
     <button className='btn btn-primary fab' onClick={handleClick}>
-        <i className="fas fa-plus"></i>
+        <BsPlusLg />
     </button>
   )
 }

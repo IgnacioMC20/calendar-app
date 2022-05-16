@@ -1,18 +1,19 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { eventDelete } from '../../actions/events';
+import { eventStartDelete } from '../../actions/events';
+import { BsFillTrashFill } from "react-icons/bs";
 
 export const DeleteEventFab = () => {
 
     const dispatch = useDispatch();
 
     const handleDelete = () => {
-        dispatch(eventDelete());
+        dispatch(eventStartDelete());
     }
 
   return (
     <button className='btn btn-danger fab-danger' onClick={handleDelete}>
-        <i class="fas fa-trash-alt"></i>
+        <BsFillTrashFill />
     </button>
   )
 }
